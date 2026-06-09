@@ -26,7 +26,7 @@ COPY src/ ./src/
 RUN composer install --no-dev --optimize-autoloader --no-scripts
 
 # Configure Apache to serve from src/ directory and pass environment variables
-RUN a2enmod rewrite headers && \
+RUN a2dismod mpm_event mpm_worker 2>/dev/null || true && a2enmod mpm_prefork rewrite headers && \
     echo 'ServerTokens Prod\n\
     ServerSignature Off\n\
     PassEnv TOKEN\n\
